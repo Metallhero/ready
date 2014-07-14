@@ -39,6 +39,7 @@ var app = {
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
+        window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
         alert('Initialize'); 
         console.log('Initialize'); 
         var parentElement = document.getElementById(id);
@@ -51,21 +52,37 @@ var app = {
         $('#testready').click(function() {
             alert('Initialize'); 
         });
-        var fileTransfer = new FileTransfer();
-            fileTransfer.download(
-                    "http://www.w3.org/2011/web-apps-ws/papers/Nitobi.pdf",
-                    "file:///sdcard/theFile.pdf",
-            function(entry) {
-                alert("download complete: " + entry.fullPath);
-            },
-            function(error) {
-                alert("download error source " + error.source);
-                alert("download error target " + error.target);
-                alert("upload error code" + error.code);
-            });
+        
+        
+        
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSystem) {
+            alert("got filesystem");
+            alert(fileSystem.root.fullPath);
+
+        
+        
+            var op;
+            op = new FileUploadOptions();
+            
+            op.headers = {
+                Connection: "close"
+            };
+            var fileTransfer = new FileTransfer();
+                fileTransfer.download(
+                        "http://www.w3.org/2011/web-apps-ws/papers/Nitobi.pdf",
+                        fileSystem.root.fullPath+"/theFile.pdf",
+                function(entry) {
+                    alert("download complete: " + entry.fullPath);
+                },
+                function(error) {
+                    alert("download error source " + error.source);
+                    alert("download error target " + error.target);
+                    alert("upload error code" + error.code);
+                });
+            }, this.fail);
 
     },
     fail:function(error) {
-        console.log(error.code);
+        alert(error.code);
     }
 };
