@@ -163,18 +163,24 @@ function downloadFile(fileUrl, fileName) {
         fileSystem.root.getFile(localFileName, {create: true, exclusive: false}, function(fileEntry) {
             alert(fileEntry.name);
             var localPath = fileEntry.fullPath;
+            alert(localPath);
+            alert(device.platform);
+            alert(localPath.indexOf("file://"));
             if (device.platform === "Android" && localPath.indexOf("file://") === 0) {
                 localPath = localPath.substring(7);
             }
             alert(remoteFile);
             alert(localPath);
             var ft = new FileTransfer();
-            ft.download(remoteFile,
-                localPath, function(entry) {
+            setTimeout(function(){
+                ft.download(remoteFile,
+                    localPath, function(entry) {
                     alert('3');
                     window.plugins.childBrowser.openExternal('file:///sdcard/'+fileName);
                     
                 }, fail);
+            },2000);
+            
         }, fail);
     }, fail);
 };
