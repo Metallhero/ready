@@ -119,33 +119,31 @@ var app = {
         // });
         
         var downloadUrl = "http://www.w3.org/2011/web-apps-ws/papers/Nitobi.pdf";
-        var relativeFilePath = "test.pdf";
-        downloadFile(downloadUrl, relativeFilePath);
-        // window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSystem) {
-            // alert("got filesystem");
-            // alert(fileSystem.root.fullPath);
-            // alert(fileSystem.root.toURL());
-            // alert('/sdcard/DCIM/' + relativeFilePath);
-//         
-            // var op;
-            // op = new FileUploadOptions();
-//             
-            // op.headers = {
-                // Connection: "close"
-            // };
-            // var fileTransfer = new FileTransfer();
-                // fileTransfer.download(
-                        // downloadUrl,
-                        // '/sdcard/DCIM/' + relativeFilePath,
-                // function(entry) {
-                    // alert("download complete: " + entry.fullPath);
-                // },
-                // function(error) {
-                    // alert("download error source " + error.source);
-                    // alert("download error target " + error.target);
-                    // alert("upload error code" + error.code);
-                // });
-            // }, this.fail);
+        var relativeFilePath = "/test.pdf";
+        // downloadFile(downloadUrl, relativeFilePath);
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSystem) {
+            alert("got filesystem");
+            alert(fileSystem.root.toURL() + '/' + relativeFilePath);
+        
+            var op;
+            op = new FileUploadOptions();
+            
+            op.headers = {
+                Connection: "close"
+            };
+            var fileTransfer = new FileTransfer();
+                fileTransfer.download(
+                        downloadUrl,
+                        fileSystem.root.toURL() + '/' + relativeFilePath,
+                function(entry) {
+                    alert("download complete: " + entry.fullPath);
+                },
+                function(error) {
+                    alert("download error source " + error.source);
+                    alert("download error target " + error.target);
+                    alert("upload error code" + error.code);
+                });
+            }, fail);
 
     },
     fail:function(error) {
@@ -159,25 +157,16 @@ function downloadFile(fileUrl, fileName) {
     var localFileName = fileName;
     
     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem) {
-        alert('1');
         fileSystem.root.getFile(localFileName, {create: true, exclusive: false}, function(fileEntry) {
-            alert(fileEntry.name);
             var localPath = fileEntry.fullPath;
-            alert(localPath);
-            alert(device.platform);
-            alert(localPath.indexOf("file://"));
             if (device.platform === "Android" && localPath.indexOf("file://") === 0) {
                 localPath = localPath.substring(7);
             }
-            alert(remoteFile);
-            alert(localPath);
             var ft = new FileTransfer();
             setTimeout(function(){
                 ft.download(remoteFile,
                     localPath, function(entry) {
-                    alert('3');
                     window.plugins.childBrowser.openExternal('file:///sdcard/'+fileName);
-                    
                 }, fail);
             },2000);
             
