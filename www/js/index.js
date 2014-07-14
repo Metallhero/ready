@@ -27,6 +27,8 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+        
+
     },
     // deviceready Event Handler
     //
@@ -37,6 +39,7 @@ var app = {
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
+        alert('Initialize'); 
         var parentElement = document.getElementById(id);
         var listeningElement = parentElement.querySelector('.listening');
         var receivedElement = parentElement.querySelector('.received');
@@ -44,6 +47,20 @@ var app = {
         listeningElement.setAttribute('style', 'display:none;');
         receivedElement.setAttribute('style', 'display:block;');
 
-        console.log('Received Event: ' + id);
+        // alert('Received Event: ' + id);
+//         
+        // $('#testready').click(function() {
+            // alert('Initialize'); 
+        // });
+        var a = new DirManager(); // Initialize a Folder manager
+       // alert(a);
+        a.create_r('folder_a',Log('created successfully'));
+
+        // LIST A DIRECTORY 
+        a.list('folder_a', Log('List'));
+
+    },
+    fail:function(error) {
+        console.log(error.code);
     }
 };
