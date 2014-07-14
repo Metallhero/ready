@@ -54,11 +54,12 @@ var app = {
         });
         
         
-        
+        var downloadUrl = "http://www.w3.org/2011/web-apps-ws/papers/Nitobi.pdf";
+        var relativeFilePath = "MyDir/test.pdf";
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSystem) {
             alert("got filesystem");
             alert(fileSystem.root.fullPath);
-
+            alert(fileSystem.root.toURL());
         
         
             var op;
@@ -69,8 +70,8 @@ var app = {
             };
             var fileTransfer = new FileTransfer();
                 fileTransfer.download(
-                        "http://www.w3.org/2011/web-apps-ws/papers/Nitobi.pdf",
-                        fileSystem.root.fullPath+"/theFile.pdf",
+                        downloadUrl,
+                        fileSystem.root.toURL() + '/' + relativeFilePath,
                 function(entry) {
                     alert("download complete: " + entry.fullPath);
                 },
