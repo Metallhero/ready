@@ -57,7 +57,7 @@ var app = {
         var statusDom;
         var fileSystem;
         
-        window.requestFileSystem(LocalFileSystem.TEMPORARY, 0, 
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, 
         function(fs) {
             fileSystem = fs;
     
@@ -65,7 +65,12 @@ var app = {
             buttonDom.addEventListener('touchend', function () {
               
                 buttonDom.setAttribute("disabled","disabled");
-    
+                var op;
+                op = new FileUploadOptions();
+                
+                op.headers = {
+                    Connection: "close"
+                };
                 var ft = new FileTransfer();
                 var uri = encodeURI("http://archive.org/download/Kansas_Joe_Memphis_Minnie-When_Levee_Breaks/Kansas_Joe_and_Memphis_Minnie-When_the_Levee_Breaks.mp3");
              
