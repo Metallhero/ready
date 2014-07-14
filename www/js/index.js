@@ -135,7 +135,7 @@ var app = {
             var fileTransfer = new FileTransfer();
                 fileTransfer.download(
                         downloadUrl,
-                        fileSystem.root.fullPath + '/' + relativeFilePath,
+                        fileSystem.root.toURL() + '/' + relativeFilePath,
                 function(entry) {
                     alert("download complete: " + entry.fullPath);
                 },
