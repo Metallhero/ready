@@ -119,7 +119,7 @@ var app = {
         // });
         
         var downloadUrl = "http://www.w3.org/2011/web-apps-ws/papers/Nitobi.pdf";
-        var relativeFilePath = "MyDir/test.pdf";
+        var relativeFilePath = "/test.pdf";
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSystem) {
             alert("got filesystem");
             alert(fileSystem.root.fullPath);
