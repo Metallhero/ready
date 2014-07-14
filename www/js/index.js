@@ -51,51 +51,21 @@ var app = {
         $('#testready').click(function() {
             alert('Initialize'); 
         });
-        downloadFile();
+        var fileTransfer = new FileTransfer();
+            fileTransfer.download(
+                    "http://www.w3.org/2011/web-apps-ws/papers/Nitobi.pdf",
+                    "file:///sdcard/theFile.pdf",
+            function(entry) {
+                alert("download complete: " + entry.fullPath);
+            },
+            function(error) {
+                alert("download error source " + error.source);
+                alert("download error target " + error.target);
+                alert("upload error code" + error.code);
+            });
 
     },
     fail:function(error) {
         console.log(error.code);
     }
 };
-
-function downloadFile(){  
-   window.requestFileSystem(  
-                LocalFileSystem.PERSISTENT, 0,  
-                function onFileSystemSuccess(fileSystem) {  
-                fileSystem.root.getFile(  
-                            "dummy.html", {create: true, exclusive: false},  
-                            function gotFileEntry(fileEntry){  
-                            var sPath = fileEntry.fullPath.replace("dummy.html","");  
-                            var fileTransfer = new FileTransfer();  
-                            fileEntry.remove();  
-                            fileTransfer.download(  
-                                       "http://www.w3.org/2011/web-apps-ws/papers/Nitobi.pdf",  
-                                       sPath + "theFile.pdf",  
-                                       function(theFile) {  
-                                       console.log("download complete: " + theFile.toURI());  
-                                       showLink(theFile.toURI());  
-                                       },  
-                                       function(error) {  
-                                       console.log("download error source " + error.source);  
-                                       console.log("download error target " + error.target);  
-                                       console.log("upload error code: " + error.code);  
-                                       }  
-                                       );  
-                            },  
-                            fail);  
-                },  
-                fail);  
- }  
- function showLink(url){  
-   alert(url);  
-   var divEl = document.getElementById("deviceready");  
-   var aElem = document.createElement("a");  
-   aElem.setAttribute("target", "_blank");  
-   aElem.setAttribute("href", url);  
-   aElem.appendChild(document.createTextNode("Ready! Click To Open."))  
-   divEl.appendChild(aElem);  
- }  
- function fail(evt) {  
-   console.log(evt.code);  
- }  
