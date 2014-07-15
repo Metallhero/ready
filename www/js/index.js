@@ -75,7 +75,7 @@ var app = {
                 var ft = new FileTransfer();
                 var uri = encodeURI("http://archive.org/download/Kansas_Joe_Memphis_Minnie-When_Levee_Breaks/Kansas_Joe_and_Memphis_Minnie-When_the_Levee_Breaks.mp3");
              
-                var downloadPath = fileSystem.root.toURL() + "/download.mp3";
+                var downloadPath = fileSystem.root.toURL() + "download.mp3";
                 
                 alert(downloadPath);
                 alert(uri);
@@ -98,8 +98,8 @@ var app = {
                 ft.download(uri, downloadPath, 
                 function(entry) {
                     statusDom.innerHTML = "";
-                    alert("download complete: " + entry.fullPath);
-                    var media = new Media(entry.fullPath, null, function(e) { alert(JSON.stringify(e));});
+                    alert("download complete: " + entry.toNativeURL());
+                    var media = new Media(entry.toNativeURL(), null, function(e) { alert(JSON.stringify(e));});
                     media.play();
                     
                 }, 
