@@ -16,6 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 var app = {
     // Application Constructor
     initialize: function() {
@@ -121,35 +122,69 @@ var app = {
         var downloadUrl = "http://www.w3.org/2011/web-apps-ws/papers/Nitobi.pdf";
         var relativeFilePath = "test.pdf";
         // downloadFile(downloadUrl, relativeFilePath);
-        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSystem) {
-            alert("got filesystem");
-            alert(fileSystem.root.toURL().substring(3)+relativeFilePath);
-        
-            var op;
-            op = new FileUploadOptions();
+        // window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSystem) {
+            // alert("got filesystem");
+            // alert(fileSystem.root.toURL().substring(3)+relativeFilePath);
+//         
+            // var op;
+            // op = new FileUploadOptions();
+//             
+            // op.headers = {
+                // Connection: "close"
+            // };
+            // var fileTransfer = new FileTransfer();
+                // fileTransfer.download(
+                        // downloadUrl,
+                        // fileSystem.root.toURL().substring(3)+relativeFilePath,
+                // function(entry) {
+                    // alert("download complete: " + entry.fullPath);
+                // },
+                // function(error) {
+                    // alert("download error source " + error.source);
+                    // alert("download error target " + error.target);
+                    // alert("upload error code" + error.code);
+                // });
+            // }, fail);
             
-            op.headers = {
-                Connection: "close"
-            };
-            var fileTransfer = new FileTransfer();
-                fileTransfer.download(
-                        downloadUrl,
-                        fileSystem.root.toURL().substring(3)+relativeFilePath,
-                function(entry) {
-                    alert("download complete: " + entry.fullPath);
-                },
-                function(error) {
-                    alert("download error source " + error.source);
-                    alert("download error target " + error.target);
-                    alert("upload error code" + error.code);
-                });
+          window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, 
+            function onFileSystemSuccess(fileSystem) {
+                fileSystem.root.getFile(
+                "dummy.html", {create: true, exclusive: false}, 
+                function gotFileEntry(fileEntry) {
+                    var sPath = fileEntry.fullPath.replace("dummy.html","");
+                    var fileTransfer = new FileTransfer();
+                    fileEntry.remove();
+        
+                    fileTransfer.download(
+                        "http://www.w3.org/2011/web-apps-ws/papers/Nitobi.pdf",
+                        sPath + "theFile.pdf",
+                        function(theFile) {
+                            console.log("download complete: " + theFile.toURI());
+                            showLink(theFile.toURI());
+                        },
+                        function(error) {
+                            console.log("download error source " + error.source);
+                            console.log("download error target " + error.target);
+                            console.log("upload error code: " + error.code);
+                        }
+                    );
+                }, fail);
             }, fail);
-
+      
     },
     fail:function(error) {
         alert(error.code);
     }
 };
+function showLink(url){
+    alert(url);
+    var divEl = document.getElementById("deviceready");
+    var aElem = document.createElement("a");
+    aElem.setAttribute("target", "_blank");
+    aElem.setAttribute("href", url);
+    aElem.appendChild(document.createTextNode("Ready! Click To Open."))
+    divEl.appendChild(aElem);
+}
 function downloadFile(fileUrl, fileName) {
     fileName = fileName.replace(/ /g, '_');
     fileName = fileName.replace(/\+/g, '_');

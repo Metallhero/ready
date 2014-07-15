@@ -97,7 +97,9 @@
     <gap:splash src="res/screen/ios/screen-ipad-landscape.png"     gap:platform="ios"     width="1024" height="768" />
     <gap:splash src="res/screen/windows-phone/screen-portrait.jpg" gap:platform="winphone" />
 
-	 <feature name="http://api.phonegap.com/1.0/file"/>
+	<plugin name="File" value="CDVFile" />
+	<plugin name="FileTransfer" value="CDVFileTransfer" />
+	<feature name="http://api.phonegap.com/1.0/file"/>
     <!--
         Define access to external domains.
 
