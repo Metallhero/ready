@@ -166,7 +166,7 @@ function gotFiles(entries) {
         
     }
     s+="<p/>";
-    logit(s);
+    alert(s);
 }
 
 function doDirectoryListing(fs) {
