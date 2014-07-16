@@ -172,12 +172,11 @@ function getById(id) {
     return document.querySelector(id);
 }
 function doDirectoryListing(fs) {
-    //get a directory reader from our FS
     try{
-        var dirReader = dirEntry.createReader();
+        var dirReader = fs.root.createReader();
         dirReader.readEntries(gotFiles,fail);  
     }catch(e){
-        alert('directory reader');
+        alert('directory reader error');
     }
           
 }
