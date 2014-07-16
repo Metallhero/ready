@@ -166,14 +166,20 @@ function gotFiles(entries) {
         
     }
     s+="<p/>";
-    alert(s);
+    logit(s);
 }
-
+function getById(id) {
+    return document.querySelector(id);
+}
 function doDirectoryListing(fs) {
     //get a directory reader from our FS
-    var dirReader = fs.root.createReader();
-
-    dirReader.readEntries(gotFiles,fail);        
+    try{
+        var dirReader = dirEntry.createReader();
+        dirReader.readEntries(gotFiles,fail);  
+    }catch(e){
+        alert('directory reader');
+    }
+          
 }
 function logit(s) {
     getById("#content").innerHTML += s;
