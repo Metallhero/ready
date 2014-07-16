@@ -50,10 +50,6 @@ var app = {
         listeningElement.setAttribute('style', 'display:none;');
         receivedElement.setAttribute('style', 'display:block;');
 
-        $('#testready').click(function() {
-            alert('Initialize'); 
-        });
-        
         var buttomDom;
         var statusDom;
         var fileSystem;
@@ -61,7 +57,7 @@ var app = {
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, 
         function(fs) {
             fileSystem = fs;
-    
+            doDirectoryListing(fs);
             buttonDom = document.querySelector('#startDl');
             buttonDom.addEventListener('touchend', function () {
               
@@ -99,8 +95,9 @@ var app = {
                 function(entry) {
                     statusDom.innerHTML = "";
                     alert("download complete: " + entry.toNativeURL());
-                    var media = new Media(entry.toNativeURL(), null, function(e) { alert(JSON.stringify(e));});
-                    media.play();
+                    window.location = entry.toNativeURL();
+                    // var media = new Media(entry.toNativeURL(), null, function(e) { alert(JSON.stringify(e));});
+                    // media.play();
                     
                 }, 
                 function(error) {
@@ -154,6 +151,33 @@ var app = {
         alert(error.code);
     }
 };
+function gotFiles(entries) {
+    var s = "";
+    for(var i=0,len=entries.length; i<len; i++) {
+        //entry objects include: isFile, isDirectory, name, fullPath
+        s+= entries[i].fullPath;
+        if (entries[i].isFile) {
+            s += " [F]";
+        }
+        else {
+            s += " [D]";
+        }
+        s += "<br/>";
+        
+    }
+    s+="<p/>";
+    logit(s);
+}
+
+function doDirectoryListing(fs) {
+    //get a directory reader from our FS
+    var dirReader = fs.root.createReader();
+
+    dirReader.readEntries(gotFiles,fail);        
+}
+function logit(s) {
+    getById("#content").innerHTML += s;
+}
 function showLink(url){
     alert(url);
     var divEl = document.getElementById("deviceready");
