@@ -183,9 +183,10 @@ button { width: 100%; padding: 5px; }
 <script type="text/javascript" src="cordova.js"></script>
 <script type="text/javascript" charset="utf-8">
 	var currentPath = "file:///store";
-$('#FileExplorerPage').live('pagebeforeshow', function(event) {
-    populate(currentPath);
-});
+// $('#FileExplorerPage').live('pagebeforeshow', function(event) {
+    // populate(currentPath);
+// });
+document.addEventListener("deviceready", populate(currentPath), true);
 function populate(path){
     try {
         var dirEntry = new DirectoryEntry({fullPath: path});
